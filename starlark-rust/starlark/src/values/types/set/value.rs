@@ -113,6 +113,13 @@ impl<'v> SetData<'v> {
     pub fn remove_hashed(&mut self, value: Hashed<&Value<'v>>) -> bool {
         self.content.shift_remove_hashed(value)
     }
+
+    /// Compute the symmetric_difference between `self` and `other` returning the new data.
+    pub fn symmetric_difference(&self, other: &Self) -> Self {
+        Self {
+            content: self.content.symmetric_difference(other.content),
+        }
+    }
 }
 
 pub(crate) type MutableSet<'v> = SetGen<RefCell<SetData<'v>>>;
@@ -324,6 +331,7 @@ where
                 content: self.0.content().clone(),
             }));
         }
+        let data = self.0.content().symmetric_difference(&rhs.aref.content);
         let mut data = SetData::default();
         for elem in self.0.content().iter_hashed() {
             if !rhs.aref.contains_hashed(elem.copied()) {

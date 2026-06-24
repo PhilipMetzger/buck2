@@ -174,6 +174,7 @@ pub(crate) fn set_methods(builder: &mut MethodsBuilder) {
             });
         }
 
+        // let data = this.aref.content.symmetric_difference(&other_set.content);
         let mut data = SetData::default();
         for elem in this.aref.content.iter_hashed() {
             if !other_set.contains_hashed(elem.copied()) {
