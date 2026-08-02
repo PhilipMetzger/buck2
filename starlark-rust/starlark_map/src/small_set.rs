@@ -24,6 +24,7 @@ use std::fmt;
 use std::fmt::Debug;
 use std::hash::Hash;
 use std::hash::Hasher;
+use std::iter::zip;
 use std::marker::PhantomData;
 
 use allocative::Allocative;
@@ -382,6 +383,32 @@ impl<T> SmallSet<T> {
     #[inline]
     pub fn last(&self) -> Option<&T> {
         self.0.last().map(|(k, ())| k)
+    }
+
+    /// Compute the symmetric difference between Self and `other` returning a new set.
+    ///
+    /// Given `SmallSet::from_iter([1, 2, 3]).symmetric_difference(&SmallSet::from_iter([2, 4, 5])`
+    /// this yields `SmallSet::from_iter([1, 3, 4, 5])`.
+    pub fn symmetric_difference(&self, other: &Self) -> SmallSet<T>
+    where
+        T: Eq + Hash,
+    {
+        let mut result = Self::with_capacity(self.len());
+        if other.is_empty() {
+            return SmallSet::<T>::from_iter(self.iter());
+        }
+        if self.is_empty() {
+            return SmallSet::<T>::from_iter(other.iter());
+        }
+        for (own_entry, other_entry) in zip(self.iter(), other.iter()) {
+            if !self.contains(other_entry) {
+                result.insert(other_entry);
+            }
+            if !other.contains(own_entry) {
+                result.insert(own_entry);
+            }
+        }
+        result
     }
 
     /// Iterator over elements of this set which are not in the other set.
@@ -772,6 +799,14 @@ mod tests {
         let d = Vec::from_iter(a.difference(&b).copied());
         assert_eq!(vec![3], d);
     }
+
+    // #[test]
+    // fn test_symmetric_difference() {
+    //     let a = SmallSet::from_iter([1, 2, 3]);
+    //     let b = SmallSet::from_iter([2, 3, 4, 5]);
+    //     let d = Vec::from_iter(a.symmetric_difference(&b).iter().copied());
+    //     assert_eq!(vec![1, 4, 5], d);
+    // }
 
     #[test]
     fn test_union() {
