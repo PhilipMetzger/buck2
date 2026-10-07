@@ -197,9 +197,7 @@ message CellHasNewConfigs {
 }
 
 /// A message that should be streaming printed to the user via stdout
-message StdoutStreamingOutput {
-  string message = 1;
-}
+message StdoutStreamingOutput { string message = 1; }
 
 /// Preemption of the running command was detected/allowed
 message CommandPreempted {}
@@ -411,13 +409,9 @@ message PreviousCommandWithMismatchedConfig {
   string trace_id = 2;
 }
 
-message ConfigurationCreated {
-  ConfigurationWithConstraints cfg = 1;
-}
+message ConfigurationCreated { ConfigurationWithConstraints cfg = 1; }
 
-message EndOfTestResults {
-  int32 exit_code = 1;
-}
+message EndOfTestResults { int32 exit_code = 1; }
 
 message BuckconfigInputValues {
   // Buckconfigs are computed by joining together values from a number of
@@ -708,9 +702,7 @@ message CriticalPathEntry {
 
 message CriticalPathEntry2 {
   message Analysis {
-    oneof target {
-      ConfiguredTargetLabel standard_target = 1;
-    }
+    oneof target { ConfiguredTargetLabel standard_target = 1; }
     optional string target_rule_type_name = 2;
     // When analysis is split due to anon target dependencies:
     // absent/0 = whole (unsplit), 1 = part before anon targets, 2 = part after
@@ -727,9 +719,7 @@ message CriticalPathEntry2 {
   }
 
   message DynamicAnalysis {
-    oneof target {
-      ConfiguredTargetLabel standard_target = 10;
-    }
+    oneof target { ConfiguredTargetLabel standard_target = 10; }
 
     uint32 index = 1;
   }
@@ -788,9 +778,7 @@ message CriticalPathEntry2 {
   /// Tracks time spent on the critical path (i.e. not accounted by other
   /// categories) such as early command processing (time spent synchronizing and
   /// waiting for concurrent commands)
-  message GenericEntry {
-    string kind = 1;
-  }
+  message GenericEntry { string kind = 1; }
 
   message PageIn {
     // The DICE key type that was paged in, e.g. "analysis_key".
@@ -802,13 +790,9 @@ message CriticalPathEntry2 {
     map<string, uint64> key_type_counts = 3;
   }
 
-  message Load {
-    string package = 1;
-  }
+  message Load { string package = 1; }
 
-  message Listing {
-    string package = 1;
-  }
+  message Listing { string package = 1; }
 
   message EnsureTransitiveSetProjection {}
 
@@ -1086,6 +1070,18 @@ message VersionControlRevision {
   optional string command_error = 3;
   // 40 characters hash for git revision.
   optional string git_revision = 4;
+  // 32 characters for the reverse hex change id.
+  optional string jj_change_id = 5;
+  // 40 characters hash for the Jujutsu revision id in a linear ancestry.
+  // If the current revision is empty and there are multiple parents, they are
+  // also reported here seoarateed by a comma and truncated at 128 characters.
+  optional string jj_revision_id = 6;
+  // The workspace buck2 was invoked in.
+  optional string jj_workspace = 7;
+  // If the toplevel directory also contains a `.git` directory as a sibling
+  // to the `.jj` one.
+  // TODO: Potentially report Saplings dotgit mode here.
+  optional bool is_colocated = 8;
 }
 
 // Event sent during build commands
@@ -1100,9 +1096,7 @@ message TargetCfg {
 // target by commands that know the target node early (e.g. `buck2 test`'s
 // pattern interpretation step). The invocation recorder accumulates these
 // into `InvocationRecord.target_rule_type_names`.
-message TargetRuleTypeName {
-  string rule_type = 1;
-}
+message TargetRuleTypeName { string rule_type = 1; }
 
 // A snapshot of current system state, with useful info.
 message Snapshot {
@@ -1495,11 +1489,11 @@ message TestResult {
     string msg = 1; // Required
   }
 
-  string name = 1; // Required
-  TestStatus status = 2; // Required
-  OptionalMsg msg = 5; // Optional
+  string name = 1;                       // Required
+  TestStatus status = 2;                 // Required
+  OptionalMsg msg = 5;                   // Optional
   google.protobuf.Duration duration = 7; // Optional
-  string details = 8; // Required
+  string details = 8;                    // Required
   ConfiguredTargetLabel target_label = 9;
   optional uint64 max_memory_used_bytes = 10;
 }
@@ -1674,9 +1668,7 @@ message CommandEnd {
   optional BuildResult build_result = 5;
 }
 
-message BuildResult {
-  bool build_completed = 1;
-}
+message BuildResult { bool build_completed = 1; }
 
 // Marks the exit of the `CommandCriticalStart` event, such that the command has
 // left the critical section.
@@ -1688,13 +1680,9 @@ message CommandCriticalEnd {
   map<string, string> metadata = 1;
 }
 
-message AuditCommandEnd {
-  reserved 1, 2, 3;
-}
+message AuditCommandEnd { reserved 1, 2, 3; }
 
-message StarlarkCommandEnd {
-  reserved 1, 2, 3;
-}
+message StarlarkCommandEnd { reserved 1, 2, 3; }
 
 message BuildCommandEnd {
   reserved 2;
@@ -1731,9 +1719,7 @@ message DocsCommandEnd {}
 
 message ExplainCommandEnd {}
 
-message CleanCommandEnd {
-  optional CleanStaleStats clean_stale_stats = 1;
-}
+message CleanCommandEnd { optional CleanStaleStats clean_stale_stats = 1; }
 
 message CleanStaleStats {
   reserved 7;
@@ -1894,9 +1880,7 @@ message CompleteCommandEnd {}
 
 message HydrationCommandEnd {}
 
-message LoadPackageStart {
-  string path = 1;
-}
+message LoadPackageStart { string path = 1; }
 
 message LoadPackageEnd {
   reserved 2, 3;
@@ -1923,15 +1907,11 @@ message LoadBuildFileEnd {
   optional uint64 starlark_tick_count = 7;
 }
 
-message SharedTaskStart {
-  string owner_trace_id = 1;
-}
+message SharedTaskStart { string owner_trace_id = 1; }
 
 message SharedTaskEnd {}
 
-message FakeStart {
-  string caramba = 1;
-}
+message FakeStart { string caramba = 1; }
 
 message FakeEnd {}
 
@@ -2020,9 +2000,7 @@ message ActionExecutionStart {
   ActionName name = 4;
 }
 
-message OmittedLocalCommand {
-  string action_digest = 1;
-}
+message OmittedLocalCommand { string action_digest = 1; }
 
 message CommandExecutionDetails {
   reserved 6, 7, 8, 9, 10, 11, 12, 35;
@@ -2098,9 +2076,7 @@ message CommandOutputsMissing {
   string message = 2;
 }
 
-message CommandTimedOut {
-  string message = 2;
-}
+message CommandTimedOut { string message = 2; }
 
 // Serialization of CommandExecutionReport
 message CommandExecution {
@@ -2116,9 +2092,7 @@ message CommandExecution {
 
   message WorkerFailure {}
 
-  message Timeout {
-    google.protobuf.Duration duration = 1;
-  }
+  message Timeout { google.protobuf.Duration duration = 1; }
 
   message Error {
     string stage = 1;
@@ -2153,9 +2127,7 @@ message InlineCommandExecutionEnvironmentMetadata {
 // relevant execution details are in the reports field.
 message CommandExecutionError {}
 
-message ActionOutput {
-  string tiny_digest = 1;
-}
+message ActionOutput { string tiny_digest = 1; }
 
 message ActionExecutionEnd {
   reserved 2, 20;
@@ -2389,9 +2361,7 @@ message ActionErrorDiagnostics {
 
 // Wrapper around `ActionSubError` so we can use `oneof` in
 // `ActionErrorDiagnostics`
-message ActionSubErrors {
-  repeated ActionSubError sub_errors = 1;
-}
+message ActionSubErrors { repeated ActionSubError sub_errors = 1; }
 
 message ActionSubError {
   // Error category produced by the error handler function provided by the rule
@@ -2455,13 +2425,9 @@ message CqueryUniverseBuildEnd {}
 // The beginning of materialization for the output of a target requested,
 // inclusive of all dependent artifacts it might recursively request to
 // materialize.
-message MaterializeRequestedArtifactStart {
-  BuildArtifact artifact = 1;
-}
+message MaterializeRequestedArtifactStart { BuildArtifact artifact = 1; }
 
-message MaterializeRequestedArtifactEnd {
-  BuildArtifact artifact = 1;
-}
+message MaterializeRequestedArtifactEnd { BuildArtifact artifact = 1; }
 
 message AnalysisProfile {
   uint64 starlark_allocated_bytes = 1;
@@ -2492,9 +2458,7 @@ message AnalysisEnd {
 
 message AnalysisStageStart {
   reserved 1;
-  oneof stage {
-    google.protobuf.Empty evaluate_rule = 2;
-  }
+  oneof stage { google.protobuf.Empty evaluate_rule = 2; }
 }
 
 message AnalysisStageEnd {}
@@ -2585,9 +2549,7 @@ message ReQueue {
   string use_case = 2;
 }
 
-message ReQueueCancelled {
-  ReQueue queue_info = 1;
-}
+message ReQueueCancelled { ReQueue queue_info = 1; }
 
 message ReQueueOverQuota {
   ReQueue queue_info = 1;
@@ -2596,13 +2558,9 @@ message ReQueueOverQuota {
   repeated string exceeded_quotas = 2;
 }
 
-message ReQueueAcquiringDependencies {
-  ReQueue queue_info = 1;
-}
+message ReQueueAcquiringDependencies { ReQueue queue_info = 1; }
 
-message ReQueueNoWorkerAvailable {
-  ReQueue queue_info = 1;
-}
+message ReQueueNoWorkerAvailable { ReQueue queue_info = 1; }
 
 message ReWorkerDownload {
   string action_digest = 1;
@@ -2614,17 +2572,11 @@ message ReWorkerUpload {
   string use_case = 2;
 }
 
-message ReUnknown {
-  string action_digest = 1;
-}
+message ReUnknown { string action_digest = 1; }
 
-message ReBeforeAction {
-  string action_digest = 1;
-}
+message ReBeforeAction { string action_digest = 1; }
 
-message ReAfterAction {
-  string action_digest = 1;
-}
+message ReAfterAction { string action_digest = 1; }
 
 // Event that traces operations on a subset of action digests
 message ActionDigestTrace {
@@ -2680,13 +2632,9 @@ message LocalQueued {}
 
 message WorkerQueued {}
 
-message LocalExecute {
-  LocalCommand command = 1;
-}
+message LocalExecute { LocalCommand command = 1; }
 
-message WorkerExecute {
-  WorkerCommand command = 1;
-}
+message WorkerExecute { WorkerCommand command = 1; }
 
 message LocalMaterializeInputs {}
 
@@ -2696,9 +2644,7 @@ message AcquireLocalResource {}
 
 message WorkerWait {}
 
-message WorkerInit {
-  WorkerInitCommand command = 1;
-}
+message WorkerInit { WorkerInitCommand command = 1; }
 
 message ExecutorStageEnd {
   // Set when a cache_query stage failed with a real error; the lookup was
@@ -2731,9 +2677,7 @@ message TestDiscoveryEnd {
   ConfiguredTargetLabel target_label = 5;
 }
 
-message TestRunStart {
-  TestSuite suite = 1;
-}
+message TestRunStart { TestSuite suite = 1; }
 
 message TestRunEnd {
   TestSuite suite = 1;
@@ -2742,9 +2686,7 @@ message TestRunEnd {
       command_host_sharing_requirements = 3;
 }
 
-message FileWatcherStart {
-  FileWatcherProvider provider = 1;
-}
+message FileWatcherStart { FileWatcherProvider provider = 1; }
 
 enum FileWatcherProvider {
   WATCHMAN = 0;
@@ -2803,9 +2745,7 @@ message FreshInstance {
   bool cleared_dep_files = 3;
 }
 
-message FileWatcherEnd {
-  FileWatcherStats stats = 1;
-}
+message FileWatcherEnd { FileWatcherStats stats = 1; }
 
 message MatchDepFilesStart {
   bool checking_filtered_inputs = 1;
@@ -2873,9 +2813,7 @@ message BxlFunctionLabel {
 }
 
 // A configuration, identified by its full name.
-message Configuration {
-  string full_name = 2;
-}
+message Configuration { string full_name = 2; }
 
 message Constraint {
   string setting = 1;
@@ -2902,9 +2840,7 @@ message BuildArtifact {
 // A target pattern, representing a set of targets. See
 // `<https://buck2.build/docs/concepts/target_pattern>` for Buck's
 // documentation on target patterns.
-message TargetPattern {
-  string value = 1;
-}
+message TargetPattern { string value = 1; }
 
 /// A message that should be printed to the user, generally via stderr
 ///
@@ -2913,15 +2849,11 @@ message TargetPattern {
 ///
 /// Generally, one should rely on properly typed events, rather than raw
 /// console events if additional formatting is required.
-message ConsoleMessage {
-  string message = 1;
-}
+message ConsoleMessage { string message = 1; }
 
 /// A message that should be printed to the user as a warning in yellow color,
 /// generally via stderr
-message ConsoleWarning {
-  string message = 1;
-}
+message ConsoleWarning { string message = 1; }
 
 message EnvironmentEntry {
   // The environment key.
@@ -3005,18 +2937,14 @@ message RecordEvent {
 }
 
 // An arbitrary tag on the command. Usually used to mark A/B experiments
-message TagEvent {
-  repeated string tags = 1;
-}
+message TagEvent { repeated string tags = 1; }
 
 // Unambiguous provider patterns that this command is requesting be brought
 // up-to-date. These patterns are not exactly the same as the patterns
 // directly provided to the buck2 command-line; rather, these patterns have
 // been disambiguated using the client's working directory and cell
 // configuration.
-message ParsedTargetPatterns {
-  repeated TargetPattern target_patterns = 1;
-}
+message ParsedTargetPatterns { repeated TargetPattern target_patterns = 1; }
 
 message TypedMetadata {
   map<string, int64> ints = 1;
@@ -3518,9 +3446,7 @@ enum InvocationOutcome {
 }
 
 // Record event sent directly to scribe.
-message BuildGraphStats {
-  repeated BuildTarget build_targets = 1;
-}
+message BuildGraphStats { repeated BuildTarget build_targets = 1; }
 
 message SoftError {
   string category = 1;
@@ -3605,9 +3531,7 @@ message DepFileUploadEnd {
 
 message CreateOutputSymlinksStart {};
 
-message CreateOutputSymlinksEnd {
-  reserved 1;
-};
+message CreateOutputSymlinksEnd { reserved 1; };
 
 message InstallEventInfoStart {
   string artifact_name = 1;
@@ -3650,9 +3574,7 @@ message MaterializationEnd {
   optional MaterializationMethod method = 7;
 };
 
-message ExclusiveCommandWaitStart {
-  optional string command_name = 1;
-}
+message ExclusiveCommandWaitStart { optional string command_name = 1; }
 
 message ExclusiveCommandWaitEnd {}
 
@@ -3664,9 +3586,7 @@ message DiceSynchronizeSectionStart {}
 
 message DiceSynchronizeSectionEnd {}
 
-message BxlExecutionStart {
-  string name = 1;
-}
+message BxlExecutionStart { string name = 1; }
 
 message BxlExecutionEnd {}
 
@@ -3687,19 +3607,13 @@ message DiceBlockConcurrentCommandStart {
   string cmd_args = 2;
 }
 
-message DiceBlockConcurrentCommandEnd {
-  string ending_active_trace_id = 1;
-}
+message DiceBlockConcurrentCommandEnd { string ending_active_trace_id = 1; }
 
-message DiceCleanupStart {
-  uint64 epoch = 1;
-}
+message DiceCleanupStart { uint64 epoch = 1; }
 
 message DiceCleanupEnd {}
 
-message DiceEqualityCheck {
-  bool is_equal = 1;
-}
+message DiceEqualityCheck { bool is_equal = 1; }
 
 message NoActiveDiceState {}
 
@@ -3709,9 +3623,7 @@ message ErrorReport {
     optional string type_name = 2;
     uint32 source_line = 3;
   }
-  message StringTag {
-    string tag = 1;
-  }
+  message StringTag { string tag = 1; }
 
   reserved 1, 2;
   // The error message that is shown to users on the CLI
@@ -3766,13 +3678,9 @@ message MaterializerStateInfo {
   uint64 num_entries_from_sqlite = 1;
 }
 
-message IoProviderInfo {
-  optional string eden_version = 1;
-}
+message IoProviderInfo { optional string eden_version = 1; }
 
-message ConcurrentCommands {
-  repeated string trace_ids = 1;
-}
+message ConcurrentCommands { repeated string trace_ids = 1; }
 
 message PersistEventLogSubprocess {
   repeated string local_error_messages = 1;
@@ -3784,9 +3692,7 @@ message PersistEventLogSubprocess {
   map<string, string> metadata = 8;
 }
 
-message StarlarkFailNoStacktrace {
-  string trace = 1;
-}
+message StarlarkFailNoStacktrace { string trace = 1; }
 
 message NoopEvent {}
 
@@ -3796,18 +3702,14 @@ message DaemonShutdown {
   repeated string callers = 4;
 }
 
-message ConsolePreferences {
-  uint64 max_lines = 1;
-}
+message ConsolePreferences { uint64 max_lines = 1; }
 
 message SubscriptionCommandStart {}
 
 message SubscriptionCommandEnd {}
 
 message DeferredPreparationStageStart {
-  oneof stage {
-    MaterializedArtifacts materialized_artifacts = 1;
-  }
+  oneof stage { MaterializedArtifacts materialized_artifacts = 1; }
 }
 
 message MaterializedArtifacts {}
@@ -3851,9 +3753,7 @@ message ReUploadEnd {
   map<string, ReUploadMetrics> stats_by_extension = 3;
 }
 
-message ConnectToInstallerStart {
-  uint32 tcp_port = 1;
-}
+message ConnectToInstallerStart { uint32 tcp_port = 1; }
 
 message ConnectToInstallerEnd {}
 
@@ -3941,9 +3841,7 @@ message TraceIoCommandStart {}
 
 message TraceIoCommandEnd {}
 
-message SetupLocalResourcesStart {
-  ConfiguredTargetLabel target_label = 1;
-}
+message SetupLocalResourcesStart { ConfiguredTargetLabel target_label = 1; }
 
 message SetupLocalResourcesEnd {}
 
@@ -3951,9 +3849,7 @@ message ReleaseLocalResourcesStart {}
 
 message ReleaseLocalResourcesEnd {}
 
-message RestartConfiguration {
-  bool enable_restarter = 1;
-}
+message RestartConfiguration { bool enable_restarter = 1; }
 
 // Events capturing commands to the deferred materializer.
 // Currently only enabled with `-c buck2.verbose_materializer_event_log=true`.
@@ -3961,17 +3857,11 @@ message RestartConfiguration {
 // when they are processed by the materializer, not when they are sent
 // to the materializer
 message MaterializerCommand {
-  message Declare {
-    string path = 1;
-  }
+  message Declare { string path = 1; }
 
-  message Ensure {
-    repeated string paths = 1;
-  }
+  message Ensure { repeated string paths = 1; }
 
-  message InvalidateFilePaths {
-    repeated string paths = 1;
-  }
+  message InvalidateFilePaths { repeated string paths = 1; }
 
   reserved 4, 5;
   reserved "register_eager_paths", "eager_dispatch_on_declare";
